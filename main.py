@@ -21,6 +21,7 @@ class Locker(BaseModel):
     items : list
 
 class forWithdraw(BaseModel):
+    id : int
     stdID : str
     pay : int
 
@@ -74,7 +75,7 @@ def deposit(dep: Deposit):
     endToStr = end.strftime("%d-%m-%Y %H:%M:%S")
     # print(end)
     # test2 = datetime.strptime(strDate, "%d-%m-%Y %H:%M:%S")
-    if(find['available']==True and len(locker['items'])!=0):
+    if(find['available']==True and len(locker['items'])!=0 and Locker['duration']>0 and 1 <= Locker['id'] <= 6):
         collection.update_one({"id": locker['id']}, {"$set": {
             "available" : False,
             "stdID" : locker['stdID'],
@@ -89,9 +90,10 @@ def deposit(dep: Deposit):
 
 @app.put("/withdraw")
 def withdraw(fwd: forWithdraw):
+    lid = fwd.id
     stdID = fwd.stdID
     pay = fwd.pay
-    data = collection.find_one({"stdID": stdID})
+    data = collection.find_one({"id": lid}, {"stdID": stdID})
     if data is None:
         raise HTTPException(status_code=404, detail="Student ID not found")
     localTime = datetime.now()
