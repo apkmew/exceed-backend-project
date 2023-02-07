@@ -4,6 +4,7 @@ from pymongo import MongoClient
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from math import ceil
+from fastapi.middleware.cors import CORSMiddleware
 import os
 load_dotenv('.env')
 
@@ -34,6 +35,16 @@ db = client['exceed04']
 collection = db['lockers']
 
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def read_root():
