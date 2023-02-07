@@ -74,7 +74,7 @@ def deposit(dep: Deposit):
     endToStr = end.strftime("%d-%m-%Y %H:%M:%S")
     # print(end)
     # test2 = datetime.strptime(strDate, "%d-%m-%Y %H:%M:%S")
-    if(find['available']==True and len(locker['items'])!=0 and locker['duration']>=0):
+    if(find['available']==True and len(locker['items'])!=0 and locker['duration']>=0 and locker['id']>=0 and locker['id']<=6):
         collection.update_one({"id": locker['id']}, {"$set": {
             "available" : False,
             "stdID" : locker['stdID'],
