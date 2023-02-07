@@ -39,6 +39,16 @@ app = FastAPI()
 def read_root():
     return {"Hello": "World"}
 
+@app.get("/lockers")
+def root():
+    z = []
+    for x in collection.find({},{"_id":0,"id" : 1 ,"available" : 1 ,"end_time": 1  }):
+        # print(x)
+        if x["available"] == True :
+            x.pop("end_time")
+        z.append(x)
+    return z
+
 @app.put("/deposit")
 def deposit(dep: Deposit):
     locker = dep.dict()
