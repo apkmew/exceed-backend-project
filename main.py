@@ -66,7 +66,7 @@ def deposit(dep: Deposit):
     else:
         raise HTTPException(400, "Locker is unavailable or there is no items")
 
-@app.get("/withdraw")
+@app.put("/withdraw")
 def withdraw(fwd: forWithdraw):
     stdID = fwd.stdID
     pay = fwd.pay
